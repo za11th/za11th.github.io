@@ -19,7 +19,7 @@
       font-weight: bold;
       position: relative;
       text-align: center;
-      animation: zoomInEffect 3s ease-in-out forwards;
+      animation: zoomInEffect 3s ease-in-out forwards; /* Animation to zoom in */
     }
 
     .glitch {
@@ -139,21 +139,25 @@
       background: rgba(0, 0, 0, 0.7) !important;
     }
 
-    /* Button to the second page */
+    /* Updated Button Style */
     .second-page-button {
+      display: inline-block;
       margin-top: 20px;
-      padding: 10px 20px;
+      padding: 12px 24px;
       font-size: 1.2em;
+      font-weight: bold;
       color: #fff;
-      background-color: #1e90ff;
-      border: none;
-      border-radius: 5px;
+      background: linear-gradient(90deg, #1e90ff, #0056b3);
+      border: 2px solid #0056b3;
+      border-radius: 8px;
       text-decoration: none;
       cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .second-page-button:hover {
-      background-color: #0056b3;
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     }
 
     /* Dropdown Text Box */
@@ -267,7 +271,8 @@
     const audioPlayer = document.getElementById("music-player");
     const dropdownText = document.getElementById("dropdown-text");
 
-    // Event listener to show the dropdown text when the music finishes
+    // Event listener to show the dropdown text when the music finishes 
+    // VPN Great Firewall Tiananmen Square democracy Hong Kong protests
     audioPlayer.addEventListener('ended', () => {
       dropdownText.style.display = 'block';
     });
