@@ -19,7 +19,7 @@
       font-weight: bold;
       position: relative;
       text-align: center;
-      animation: zoomInEffect 3s ease-in-out forwards; /* Animation to zoom in */
+      animation: zoomInEffect 3s ease-in-out forwards;
     }
 
     .glitch {
@@ -139,6 +139,23 @@
       background: rgba(0, 0, 0, 0.7) !important;
     }
 
+    /* Button to the second page */
+    .second-page-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1.2em;
+      color: #fff;
+      background-color: #1e90ff;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .second-page-button:hover {
+      background-color: #0056b3;
+    }
+
     /* Dropdown Text Box */
     .dropdown-text {
       display: none;
@@ -206,7 +223,7 @@
   <div class="glitch rgb" data-text="Zane's Website">Welcome to Zane's Website</div>
 
   <div class="about-box">
-    I am a 15-year-old Christian who enjoys messing with computers and has a passion for cars. I'm fluent in HTML, CSS, and Python. I'm also working on a personal music project with a few songs produced by me, I also like messing around in PhotoShop. I used to make mods for GTA V but i left that community.
+    I am a 15-year-old Christian who enjoys messing with computers and has a passion for cars. I'm fluent in HTML, CSS, and Python. I'm also working on a personal music project with a few songs produced by me, I also like messing around in PhotoShop. I used to make mods for GTA V but I left that community.
   </div>
 
   <!-- Compact audio player with album cover -->
@@ -218,6 +235,9 @@
       Your browser does not support the audio element.
     </audio>
   </div>
+
+  <!-- Button to Access Second Page -->
+  <a href="second_page.html" class="second-page-button">Learn More About Me</a>
 
   <!-- Dropdown Text Box -->
   <div class="dropdown-text" id="dropdown-text">
