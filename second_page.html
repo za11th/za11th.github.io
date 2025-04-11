@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Points with People</title>
+    <title>3D Models and Points</title>
     <style>
         body {
             margin: 0;
@@ -13,10 +13,10 @@
 </head>
 <body>
     <script type="module">
-        // Import Three.js
         import * as THREE from './js/three.module.js';
+        import { OBJLoader } from './js/OBJLoader.js'; // Import the OBJLoader
 
-        let camera, scene, renderer, points, peopleGroup;
+        let camera, scene, renderer, points;
 
         init();
         animate();
@@ -46,23 +46,13 @@
             points = new THREE.Points(pointsGeometry, pointsMaterial);
             scene.add(points);
 
-            // Create "people" (small spheres)
-            peopleGroup = new THREE.Group(); // Group to hold all people
-            for (let i = 0; i < 50; i++) {
-                const personGeometry = new THREE.SphereGeometry(10, 16, 16); // Small sphere
-                const personMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Red color
-                const person = new THREE.Mesh(personGeometry, personMaterial);
-
-                // Random position for each person
-                person.position.set(
-                    THREE.MathUtils.randFloatSpread(1000),
-                    THREE.MathUtils.randFloatSpread(1000),
-                    THREE.MathUtils.randFloatSpread(1000)
-                );
-
-                peopleGroup.add(person); // Add to group
-            }
-            scene.add(peopleGroup); // Add group to the scene
+            // Load the "RibHead.obj" model
+            const objLoader = new OBJLoader();
+            objLoader.load('./models/RibHead.obj', function (object) {
+                object.position.set(0, 0, 0); // Set position
+                object.scale.set(10, 10, 10); // Adjust scale
+                scene.add(object); // Add to the scene
+            });
 
             // Set up the renderer
             renderer = new THREE.WebGLRenderer();
@@ -83,11 +73,9 @@
         function animate() {
             requestAnimationFrame(animate);
 
-            // Rotate the points and people for animation
+            // Rotate the points for animation
             points.rotation.x += 0.001;
             points.rotation.y += 0.001;
-
-            peopleGroup.rotation.y += 0.002; // Rotate the group of people
 
             renderer.render(scene, camera);
         }
