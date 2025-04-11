@@ -52,9 +52,10 @@
             objLoader.load('./models/obj/Cerberus.obj', function (object) {
                 object.position.set(0, 0, 0); // Set position
                 object.scale.set(10, 10, 10); // Adjust scale
+                console.log('Model loaded successfully:', object); // Debug log
                 scene.add(object); // Add to the scene
             }, undefined, function (error) {
-                console.error('An error occurred while loading the model:', error);
+                console.error('An error occurred while loading the model:', error); // Error handling
             });
 
             // Set up the renderer
