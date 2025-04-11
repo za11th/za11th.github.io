@@ -9,12 +9,10 @@
   </style>
 </head>
 <body>
-<!-- Include THREE.js -->
-<script type="module">
-  import * as THREE from './js/three.module.js';
-</script>
+<!-- Include THREE.js first -->
+<script src="./js/three.js"></script>
 
-<!-- Include OrbitControls.js directly via a script tag -->
+<!-- Include OrbitControls.js next -->
 <script src="./js/OrbitControls.js"></script>
 
 <script type="module">
@@ -102,7 +100,7 @@
     mesh = new THREE.Points(geometry, material);
     scene.add(mesh);
 
-    // Use the globally available OrbitControls
+    // Use the globally available OrbitControls after THREE.js is loaded
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.1;
