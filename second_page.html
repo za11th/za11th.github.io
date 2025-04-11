@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Points Example</title>
+    <title>Dynamic Points with People</title>
     <style>
         body {
             margin: 0;
@@ -16,7 +16,7 @@
         // Import Three.js
         import * as THREE from './js/three.module.js';
 
-        let camera, scene, renderer, points;
+        let camera, scene, renderer, points, peopleGroup;
 
         init();
         animate();
@@ -29,27 +29,40 @@
             // Set up the scene
             scene = new THREE.Scene();
 
-            // Create points geometry
-            const geometry = new THREE.BufferGeometry();
+            // Create points geometry (background stars)
+            const pointsGeometry = new THREE.BufferGeometry();
             const vertices = [];
-
             for (let i = 0; i < 10000; i++) {
                 vertices.push(THREE.MathUtils.randFloatSpread(2000)); // x
                 vertices.push(THREE.MathUtils.randFloatSpread(2000)); // y
                 vertices.push(THREE.MathUtils.randFloatSpread(2000)); // z
             }
-
-            geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-
-            const material = new THREE.PointsMaterial({
+            pointsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+            const pointsMaterial = new THREE.PointsMaterial({
                 color: 0x888888,
                 size: 5,
                 sizeAttenuation: true,
             });
-
-            // Create the points and add them to the scene
-            points = new THREE.Points(geometry, material);
+            points = new THREE.Points(pointsGeometry, pointsMaterial);
             scene.add(points);
+
+            // Create "people" (small spheres)
+            peopleGroup = new THREE.Group(); // Group to hold all people
+            for (let i = 0; i < 50; i++) {
+                const personGeometry = new THREE.SphereGeometry(10, 16, 16); // Small sphere
+                const personMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Red color
+                const person = new THREE.Mesh(personGeometry, personMaterial);
+
+                // Random position for each person
+                person.position.set(
+                    THREE.MathUtils.randFloatSpread(1000),
+                    THREE.MathUtils.randFloatSpread(1000),
+                    THREE.MathUtils.randFloatSpread(1000)
+                );
+
+                peopleGroup.add(person); // Add to group
+            }
+            scene.add(peopleGroup); // Add group to the scene
 
             // Set up the renderer
             renderer = new THREE.WebGLRenderer();
@@ -70,9 +83,11 @@
         function animate() {
             requestAnimationFrame(animate);
 
-            // Rotate the points for animation
+            // Rotate the points and people for animation
             points.rotation.x += 0.001;
             points.rotation.y += 0.001;
+
+            peopleGroup.rotation.y += 0.002; // Rotate the group of people
 
             renderer.render(scene, camera);
         }
