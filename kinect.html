@@ -10,8 +10,9 @@
 </head>
 <body>
 <script type="module">
-  import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js';
-  import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.158.0/examples/jsm/controls/OrbitControls.js';
+  // Importing three.js and OrbitControls from local /js directory
+  import * as THREE from './js/three.module.js';
+  import { OrbitControls } from './js/OrbitControls.js';
 
   let camera, scene, renderer, controls;
   let video, videoTexture, mesh;
