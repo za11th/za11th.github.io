@@ -4,27 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Cyberattack Map</title>
-    <script src="https://unpkg.com/three"></script>
-    <script src="https://unpkg.com/globe.gl"></script>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-        }
+    <!-- Use the ES module version of Three.js to avoid Node.js-specific exports issues -->
+    <script type="module">
+        import * as THREE from 'https://unpkg.com/three@0.152.2/build/three.module.js';
+        import Globe from 'https://unpkg.com/globe.gl/dist/globe.gl.module.js';
 
-        canvas {
-            display: block;
-        }
-    </style>
-</head>
-<body>
-    <div id="globe-container"></div>
-
-    <script>
         // Create the globe
         const globe = Globe()
-            .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg') // Nighttime globe texture
-            .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png') // Topology for 3D effect
+            .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-night.jpg') // Nighttime globe texture
+            .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png') // Topology for 3D effect
             .width(window.innerWidth) // Fullscreen width
             .height(window.innerHeight) // Fullscreen height
             .showAtmosphere(true)
@@ -73,5 +61,18 @@
         globe.controls().autoRotate = true;
         globe.controls().autoRotateSpeed = 0.5;
     </script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="globe-container"></div>
 </body>
 </html>
