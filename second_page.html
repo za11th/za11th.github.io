@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Cyberattack Map</title>
-    <!-- Use the ES module version of Three.js to avoid Node.js-specific exports issues -->
+    <title>Real-Time 3D Cyberattack Map</title>
     <script type="module">
         import * as THREE from 'https://unpkg.com/three@0.152.2/build/three.module.js';
         import Globe from 'https://unpkg.com/globe.gl/dist/globe.gl.module.js';
@@ -26,40 +25,55 @@
             globe.height([window.innerHeight]);
         });
 
-        // Sample data points for attack lines
-        const arcsData = [
-            { startLat: 34.0522, startLng: -118.2437, endLat: 40.7128, endLng: -74.0060, color: 'red' }, // LA to NYC
-            { startLat: 51.5074, startLng: -0.1278, endLat: 48.8566, endLng: 2.3522, color: 'yellow' }, // London to Paris
-            { startLat: 35.6895, startLng: 139.6917, endLat: 37.7749, endLng: -122.4194, color: 'green' } // Tokyo to SF
-        ];
+        // Shodan Streaming API connection
+        const API_KEY = "d2x5NJ4Fd5ES2NXqtbEuRgxbGQNEWwYG";
+        const SHODAN_STREAM_URL = `wss://stream.shodan.io/shodan/alert?key=${API_KEY}`;
 
-        // Add arcs to the globe
-        globe
-            .arcsData(arcsData)
-            .arcColor('color')
-            .arcAltitude(0.2)
-            .arcStroke(1.5)
-            .arcDashLength(0.5)
-            .arcDashGap(2)
-            .arcDashAnimateTime(4000);
+        const arcsData = []; // Array to store real-time arc data
 
-        // Add markers for attack origins
-        globe
-            .pointsData(arcsData.map(d => ({ lat: d.startLat, lng: d.startLng })))
-            .pointColor(() => 'red')
-            .pointAltitude(() => 0.05)
-            .pointRadius(0.2);
+        const socket = new WebSocket(SHODAN_STREAM_URL);
+        socket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            
+            if (data.ip_str && data.location) {
+                const { latitude, longitude } = data.location;
+                const randomTarget = { lat: latitude + 5, lng: longitude + 5 }; // Mock random target location
+                
+                // Add real-time attack data to arcsData
+                arcsData.push({
+                    startLat: latitude,
+                    startLng: longitude,
+                    endLat: randomTarget.lat,
+                    endLng: randomTarget.lng,
+                    color: 'red'
+                });
 
-        // Add markers for attack destinations
-        globe
-            .pointsData(arcsData.map(d => ({ lat: d.endLat, lng: d.endLng })))
-            .pointColor(() => 'yellow')
-            .pointAltitude(() => 0.05)
-            .pointRadius(0.2);
+                // Update the globe with new arcs
+                globe
+                    .arcsData(arcsData)
+                    .arcColor('color')
+                    .arcAltitude(0.2)
+                    .arcStroke(1.5)
+                    .arcDashLength(0.5)
+                    .arcDashGap(2)
+                    .arcDashAnimateTime(4000);
 
-        // Rotate the globe
-        globe.controls().autoRotate = true;
-        globe.controls().autoRotateSpeed = 0.5;
+                // Add markers for attack origins
+                globe
+                    .pointsData(arcsData.map(d => ({ lat: d.startLat, lng: d.startLng })))
+                    .pointColor(() => 'red')
+                    .pointAltitude(() => 0.05)
+                    .pointRadius(0.2);
+            }
+        };
+
+        socket.onerror = (error) => {
+            console.error('WebSocket Error:', error);
+        };
+
+        socket.onclose = () => {
+            console.warn('WebSocket connection closed');
+        };
     </script>
     <style>
         body {
