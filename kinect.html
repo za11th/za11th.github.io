@@ -9,120 +9,125 @@
   </style>
 </head>
 <body>
+  <!-- First, import three.module.js as a module and set it globally -->
+  <script type="module">
+    import * as THREE from './js/three.module.js';
+    window.THREE = THREE; // Expose THREE globally so OrbitControls.js can access it.
+  </script>
 
-<!-- Import three.js as a module first -->
-<script type="module">
-  import * as THREE from './js/three.module.js';
-  import { OrbitControls } from './js/OrbitControls.js';
+  <!-- Now load OrbitControls.js as a non-module script -->
+  <script src="./js/OrbitControls.js"></script>
 
-  let camera, scene, renderer, controls;
-  let video, videoTexture, mesh;
-
-  init();
-  animate();
-
-  function init() {
-    scene = new THREE.Scene();
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-
-    camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
-    camera.position.z = 1000;
-
-    renderer = new THREE.WebGLRenderer();
-    renderer.setSize(width, height);
-    document.body.appendChild(renderer.domElement);
-
-    video = document.createElement('video');
-    video.src = 'textures/kinect.webm';
-    video.crossOrigin = 'anonymous';
-    video.loop = true;
-    video.muted = true;
-    video.autoplay = true;
-    video.playsInline = true;
-
-    video.addEventListener('canplay', () => {
-      video.play();
-    });
-
-    videoTexture = new THREE.VideoTexture(video);
-    videoTexture.minFilter = THREE.LinearFilter;
-    videoTexture.magFilter = THREE.LinearFilter;
-    videoTexture.format = THREE.RGBFormat;
-
-    const amount = 512;
-    const count = amount * amount;
-    const positions = new Float32Array(count * 3);
-    const uvs = new Float32Array(count * 2);
-
-    let i = 0, j = 0;
-    for (let y = 0; y < amount; y++) {
-      for (let x = 0; x < amount; x++) {
-        positions[i] = x - amount / 2;
-        positions[i + 1] = -y + amount / 2;
-        positions[i + 2] = 0;
-        uvs[j] = x / amount;
-        uvs[j + 1] = y / amount;
-        i += 3;
-        j += 2;
+  <!-- Now your main module code -->
+  <script type="module">
+    // Since THREE is now on window, we use window.THREE for all references.
+    let camera, scene, renderer, controls;
+    let video, videoTexture, mesh;
+  
+    init();
+    animate();
+  
+    function init() {
+      scene = new window.THREE.Scene();
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+  
+      camera = new window.THREE.PerspectiveCamera(45, width / height, 1, 10000);
+      camera.position.z = 1000;
+  
+      renderer = new window.THREE.WebGLRenderer();
+      renderer.setSize(width, height);
+      document.body.appendChild(renderer.domElement);
+  
+      video = document.createElement('video');
+      video.src = 'textures/kinect.webm';
+      video.crossOrigin = 'anonymous';
+      video.loop = true;
+      video.muted = true;
+      video.autoplay = true;
+      video.playsInline = true;
+  
+      video.addEventListener('canplay', () => {
+        video.play();
+      });
+  
+      videoTexture = new window.THREE.VideoTexture(video);
+      videoTexture.minFilter = window.THREE.LinearFilter;
+      videoTexture.magFilter = window.THREE.LinearFilter;
+      videoTexture.format = window.THREE.RGBFormat;
+  
+      const amount = 512;
+      const count = amount * amount;
+      const positions = new Float32Array(count * 3);
+      const uvs = new Float32Array(count * 2);
+  
+      let i = 0, j = 0;
+      for (let y = 0; y < amount; y++) {
+        for (let x = 0; x < amount; x++) {
+          positions[i] = x - amount / 2;
+          positions[i + 1] = -y + amount / 2;
+          positions[i + 2] = 0;
+          uvs[j] = x / amount;
+          uvs[j + 1] = y / amount;
+          i += 3;
+          j += 2;
+        }
       }
+  
+      const geometry = new window.THREE.BufferGeometry();
+      geometry.setAttribute('position', new window.THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute('uv', new window.THREE.BufferAttribute(uvs, 2));
+  
+      const material = new window.THREE.ShaderMaterial({
+        uniforms: {
+          map: { value: videoTexture }
+        },
+        vertexShader: `
+          uniform sampler2D map;
+          varying vec2 vUv;
+          void main() {
+            vUv = uv;
+            vec4 color = texture2D(map, uv);
+            vec3 pos = position;
+            pos.z = color.r * 500.0;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying vec2 vUv;
+          uniform sampler2D map;
+          void main() {
+            gl_FragColor = texture2D(map, vUv);
+          }
+        `
+      });
+  
+      mesh = new window.THREE.Points(geometry, material);
+      scene.add(mesh);
+  
+      // Now create OrbitControls using the globally attached OrbitControls (from OrbitControls.js)
+      controls = new window.THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.1;
+      controls.rotateSpeed = 0.5;
+  
+      window.addEventListener('resize', onWindowResize);
     }
-
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
-
-    const material = new THREE.ShaderMaterial({
-      uniforms: {
-        map: { value: videoTexture }
-      },
-      vertexShader: `
-        uniform sampler2D map;
-        varying vec2 vUv;
-        void main() {
-          vUv = uv;
-          vec4 color = texture2D(map, uv);
-          vec3 pos = position;
-          pos.z = color.r * 500.0;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-        }
-      `,
-      fragmentShader: `
-        varying vec2 vUv;
-        uniform sampler2D map;
-        void main() {
-          gl_FragColor = texture2D(map, vUv);
-        }
-      `
-    });
-
-    mesh = new THREE.Points(geometry, material);
-    scene.add(mesh);
-
-    // Initialize OrbitControls after THREE is defined
-    controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.1;
-    controls.rotateSpeed = 0.5;
-
-    window.addEventListener('resize', onWindowResize);
-  }
-
-  function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  }
-
-  function animate() {
-    requestAnimationFrame(animate);
-    controls.update();
-    if (video.readyState >= video.HAVE_CURRENT_DATA) {
-      videoTexture.needsUpdate = true;
+  
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
     }
-    renderer.render(scene, camera);
-  }
-</script>
-
+  
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      if (video.readyState >= video.HAVE_CURRENT_DATA) {
+        videoTexture.needsUpdate = true;
+      }
+      renderer.render(scene, camera);
+    }
+  </script>
 </body>
 </html>
