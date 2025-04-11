@@ -7,7 +7,7 @@
   <style>
     body {
       margin: 0;
-      overflow: hidden;
+      overflow: hidden; /* Disable scrolling for larger screens */
       background: #000;
       color: #fff;
       font-family: Arial, sans-serif;
@@ -156,6 +156,7 @@
       transform: scale(1.05);
     }
 
+    /* Dropdown Text Box */
     .dropdown-text {
       display: none;
       margin-top: 20px;
@@ -211,6 +212,10 @@
 
     /* Responsive Design for Phones */
     @media (max-width: 768px) {
+      body {
+        overflow: auto; /* Enable scrolling for smaller screens */
+      }
+
       .glitch {
         font-size: 1.5em;
       }
@@ -236,6 +241,10 @@
     }
 
     @media (max-width: 480px) {
+      body {
+        overflow: auto; /* Enable scrolling for smaller screens */
+      }
+
       .glitch {
         font-size: 1.2em;
       }
