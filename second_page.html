@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Cyberattack Map</title>
+    <script src="https://unpkg.com/three"></script>
+    <script src="https://unpkg.com/globe.gl"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="globe-container"></div>
+
+    <script>
+        // Create the globe
+        const globe = Globe()
+            .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg') // Nighttime globe texture
+            .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png') // Topology for 3D effect
+            .width(window.innerWidth) // Fullscreen width
+            .height(window.innerHeight) // Fullscreen height
+            .showAtmosphere(true)
+            .atmosphereColor('blue')
+            .atmosphereAltitude(0.2)
+            (document.getElementById('globe-container'));
+
+        // Resize the globe on window resize
+        window.addEventListener('resize', () => {
+            globe.width([window.innerWidth]);
+            globe.height([window.innerHeight]);
+        });
+
+        // Sample data points for attack lines
+        const arcsData = [
+            { startLat: 34.0522, startLng: -118.2437, endLat: 40.7128, endLng: -74.0060, color: 'red' }, // LA to NYC
+            { startLat: 51.5074, startLng: -0.1278, endLat: 48.8566, endLng: 2.3522, color: 'yellow' }, // London to Paris
+            { startLat: 35.6895, startLng: 139.6917, endLat: 37.7749, endLng: -122.4194, color: 'green' } // Tokyo to SF
+        ];
+
+        // Add arcs to the globe
+        globe
+            .arcsData(arcsData)
+            .arcColor('color')
+            .arcAltitude(0.2)
+            .arcStroke(1.5)
+            .arcDashLength(0.5)
+            .arcDashGap(2)
+            .arcDashAnimateTime(4000);
+
+        // Add markers for attack origins
+        globe
+            .pointsData(arcsData.map(d => ({ lat: d.startLat, lng: d.startLng })))
+            .pointColor(() => 'red')
+            .pointAltitude(() => 0.05)
+            .pointRadius(0.2);
+
+        // Add markers for attack destinations
+        globe
+            .pointsData(arcsData.map(d => ({ lat: d.endLat, lng: d.endLng })))
+            .pointColor(() => 'yellow')
+            .pointAltitude(() => 0.05)
+            .pointRadius(0.2);
+
+        // Rotate the globe
+        globe.controls().autoRotate = true;
+        globe.controls().autoRotateSpeed = 0.5;
+    </script>
+</body>
+</html>
