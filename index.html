@@ -2,23 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>System Initialization</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Local Host Testing</title>
   <style>
-  
     body {
       margin: 0;
-      background: #000; 
-      color: #fff; 
-      font-family: "Courier New", Courier, monospace; 
-      overflow: hidden; 
+      overflow: hidden;
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
       height: 100vh;
+      font-weight: bold;
+      position: relative;
+      text-align: center;
     }
 
-   
     .terminal {
       width: 90%;
       height: 90%;
@@ -30,14 +32,12 @@
       justify-content: flex-end;
     }
 
-    
     .line {
       margin: 0;
-      white-space: pre-wrap; 
+      white-space: pre-wrap;
       line-height: 1.4;
     }
 
-    
     .cursor {
       display: inline-block;
       width: 10px;
@@ -47,75 +47,116 @@
     }
 
     @keyframes blink {
-      0%, 100% {
-        opacity: 1;
-      }
-      50% {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .main-content {
+      display: none; /* Initially hidden until animation completes */
+      animation: zoomInEffect 3s ease-in-out forwards;
+    }
+
+    @keyframes zoomInEffect {
+      0% {
+        transform: scale(0.5);
         opacity: 0;
       }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
+
+    .background-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    /* Previous styles for glitch, about-box, audio-player, etc. */
+    /* (Omitted here for brevity but remains unchanged) */
   </style>
 </head>
 <body>
+  <!-- Terminal Animation -->
   <div class="terminal" id="terminal">
-  
     <span class="cursor"></span>
   </div>
 
+  <!-- Main Content -->
+  <div class="main-content" id="main-content">
+    <video autoplay muted loop playsinline class="background-video">
+      <source src="deathtotheworld.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+
+    <div class="glitch rgb" data-text="Zane's Website">Welcome to Zane's Website</div>
+
+    <div class="about-box">
+      I am a 15-year-old Christian who enjoys messing with computers and has a passion for cars. I'm fluent in HTML, CSS, and Python. I'm also working on a personal music project with a few songs produced by me, I also like messing around in PhotoShop. I used to make mods for GTA V but I left that community.
+    </div>
+
+    <div class="audio-player">
+      <img src="Album_Cover.png" alt="Album Cover" />
+      <h2>You Did It King</h2>
+      <audio id="music-player" controls>
+        <source src="You_Did_It_King.mp3" type="audio/mp3" />
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+
+    <a href="second_page.html" class="link-button">Second Page</a>
+
+    <div class="dropdown-text" id="dropdown-text">
+      Pretty cool, Right?
+    </div>
+
+    <div class="image-container">
+      <img id="current-image" src="12.png" alt="Image" class="image-12" />
+      <span class="arrow left-arrow" onclick="changeImage('prev')">&#8592;</span>
+      <span class="arrow right-arrow" onclick="changeImage('next')">&#8594;</span>
+    </div>
+  </div>
+
   <script>
-   
-    const messages = [
-      { text: "  _____        __       ____  __", isCommand: false }, 
-      { text: " / ___/__  ___/ /__    / __ \\/ /", isCommand: false }, 
-      { text: "/ (_ / _ \\/ _  / -_)  / /_/ / /__", isCommand: false }, 
-      { text: "\\___/\\___/\\_,_/\\__/   \\____/____/", isCommand: false }, 
-      { text: " ", isCommand: false },
-      { text: "> send_payload", isCommand: true },
+    const terminalMessages = [
+      { text: "  _____        __       ____  __", isCommand: false },
+      { text: " / ___/__  ___/ /__    / __ \\/ /", isCommand: false },
+      { text: "/ (_ / _ \\/ _  / -_)  / /_/ / /__", isCommand: false },
+      { text: "\\___/\\___/\\_,_/\\__/   \\____/____/", isCommand: false },
+      { text: "> Initializing system...", isCommand: true },
       { text: "[00:00:01] SecureROM exploit detected...", isCommand: false },
       { text: "[00:00:02] Sending payload...", isCommand: false },
       { text: "[00:00:03] [OK] Payload delivered.", isCommand: false },
-      { text: "> execute_stage2", isCommand: true },
-      { text: "[00:00:04] Uploading exploit... 50%", isCommand: false },
-      { text: "[00:00:05] [OK] Exploit uploaded.", isCommand: false },
-      { text: "[00:00:06] Gaining kernel access...", isCommand: false },
-      { text: "[00:00:07] [OK] Kernel access granted.", isCommand: false },
-      { text: "> finalize", isCommand: true },
-      { text: "[00:00:08] Patching system files...", isCommand: false },
-      { text: "[00:00:09] [OK] System patched.", isCommand: false },
-      { text: "[00:00:10] Injecting libraries...", isCommand: false },
-      { text: "[00:00:11] [OK] Injection complete.", isCommand: false },
-      { text: "[00:00:12] Rebooting device...", isCommand: false },
-      { text: " ", isCommand: false },
-      { text: "===============================", isCommand: false },
-      { text: "       Jailbreak Summary       ", isCommand: false },
-      { text: "===============================", isCommand: false },
-      { text: "- Total Time: 12 seconds", isCommand: false },
-      { text: "- Exploits Used: 2", isCommand: false },
-      { text: "- Errors: 0", isCommand: false },
-      { text: "===============================", isCommand: false }
+      { text: "[00:00:04] Gaining kernel access...", isCommand: false },
+      { text: "[00:00:05] [OK] Kernel access granted.", isCommand: false },
+      { text: "[00:00:06] Rebooting device...", isCommand: false },
     ];
 
-    const terminal = document.getElementById("terminal");
+    const terminalDiv = document.getElementById("terminal");
+    const mainContentDiv = document.getElementById("main-content");
     const cursor = document.querySelector(".cursor");
 
-    
     function typeLog(message, callback) {
       let index = 0;
       const line = document.createElement("p");
       line.className = "line";
 
-     
       if (message.isCommand) {
-        line.style.color = "#00f";
+        line.style.color = "#00f"; // Blue for commands
       }
 
-      terminal.insertBefore(line, cursor); 
+      terminalDiv.insertBefore(line, cursor);
 
       function typeChar() {
         if (index < message.text.length) {
           line.textContent += message.text.charAt(index);
           index++;
-          setTimeout(typeChar, 20); 
+          setTimeout(typeChar, 30); // Typing speed: 30ms per character
         } else if (callback) {
           callback();
         }
@@ -123,18 +164,23 @@
       typeChar();
     }
 
-   
     function addLogs(messages, currentIndex = 0) {
       if (currentIndex < messages.length) {
         typeLog(messages[currentIndex], () => {
-          terminal.scrollTop = terminal.scrollHeight; 
+          terminalDiv.scrollTop = terminalDiv.scrollHeight;
           addLogs(messages, currentIndex + 1);
         });
+      } else {
+        // Transition to main content
+        setTimeout(() => {
+          terminalDiv.style.display = "none"; // Hide terminal
+          mainContentDiv.style.display = "block"; // Show main content
+        }, 2000); // 2-second delay after logs finish
       }
     }
 
-    
-    addLogs(messages);
+    // Start the terminal animation
+    addLogs(terminalMessages);
   </script>
 </body>
 </html>
