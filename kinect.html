@@ -10,8 +10,8 @@
 </head>
 <body>
 <script type="module">
-  import * as THREE from 'https://cdn.skypack.dev/three@0.158.0';
-  import { OrbitControls } from 'https://cdn.skypack.dev/three@0.158.0/examples/jsm/controls/OrbitControls.js';
+  import * as THREE from 'https://unpkg.com/three@0.158.0/build/three.module.js';
+  import { OrbitControls } from 'https://unpkg.com/three@0.158.0/examples/jsm/controls/OrbitControls.js';
 
   let camera, scene, renderer, controls;
   let video, videoTexture, mesh;
@@ -31,9 +31,8 @@
     renderer.setSize(width, height);
     document.body.appendChild(renderer.domElement);
 
-    // Create and reference video
     video = document.createElement('video');
-    video.src = 'textures/kinect.webm'; // reference the file you uploaded
+    video.src = 'textures/kinect.webm';
     video.loop = true;
     video.muted = true;
     video.play();
