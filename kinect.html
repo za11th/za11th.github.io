@@ -9,13 +9,15 @@
   </style>
 </head>
 <body>
+<!-- Include THREE.js -->
 <script type="module">
-  // Importing three.js from your local /js directory
   import * as THREE from './js/three.module.js';
-  
-  // OrbitControls might not be properly exported from OrbitControls.js, so we need to fix it.
-  import { OrbitControls } from './js/OrbitControls.js';
+</script>
 
+<!-- Include OrbitControls.js directly via a script tag -->
+<script src="./js/OrbitControls.js"></script>
+
+<script type="module">
   let camera, scene, renderer, controls;
   let video, videoTexture, mesh;
 
@@ -100,7 +102,8 @@
     mesh = new THREE.Points(geometry, material);
     scene.add(mesh);
 
-    controls = new OrbitControls(camera, renderer.domElement);
+    // Use the globally available OrbitControls
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.1;
     controls.rotateSpeed = 0.5;
