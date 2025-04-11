@@ -32,10 +32,16 @@
     document.body.appendChild(renderer.domElement);
 
     video = document.createElement('video');
-    video.src = 'textures/kinect.webm'; // Ensure this file exists in /textures
+    video.src = 'textures/kinect.webm';
+    video.crossOrigin = 'anonymous';
     video.loop = true;
     video.muted = true;
-    video.play();
+    video.autoplay = true;
+    video.playsInline = true;
+
+    video.addEventListener('canplay', () => {
+      video.play();
+    });
 
     videoTexture = new THREE.VideoTexture(video);
     videoTexture.minFilter = THREE.LinearFilter;
