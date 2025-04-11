@@ -136,28 +136,26 @@
       border: none;
     }
 
-    /* Updated Button Style */
-    .second-page-button {
+    /* Button Style */
+    .link-button {
       display: inline-block;
       margin-top: 20px;
       padding: 12px 24px;
-      font-size: 1.2em;
-      font-weight: bold;
+      font-size: 1.1em;
       color: #fff;
-      background: linear-gradient(90deg, #1e90ff, #0056b3);
-      border: 2px solid #0056b3;
-      border-radius: 8px;
+      background-color: rgba(0, 0, 0, 0.6);
+      border: 2px solid #fff;
+      border-radius: 10px;
       text-decoration: none;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+      font-weight: bold;
+      transition: background-color 0.3s ease, transform 0.3s ease;
     }
 
-    .second-page-button:hover {
+    .link-button:hover {
+      background-color: rgba(255, 255, 255, 0.2);
       transform: scale(1.05);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     }
 
-    /* Dropdown Text Box */
     .dropdown-text {
       display: none;
       margin-top: 20px;
@@ -167,7 +165,6 @@
       font-size: 1.2em;
     }
 
-    /* Zoom In Effect for Page Load */
     @keyframes zoomInEffect {
       0% {
         transform: scale(0.5);
@@ -179,7 +176,6 @@
       }
     }
 
-    /* Style for the image */
     .image-container {
       position: relative;
       display: flex;
@@ -189,7 +185,7 @@
     }
 
     .image-container img {
-      width: 320px; /* Adjusted image size */
+      width: 320px;
       height: auto;
       border-radius: 20px;
     }
@@ -237,8 +233,8 @@
     </audio>
   </div>
 
-  <!-- Button to Access Second Page -->
-  <a href="second_page.html" class="second-page-button">Learn More About Me</a>
+  <!-- Simplified Button -->
+  <a href="second_page.html" class="link-button">Second Page</a>
 
   <!-- Dropdown Text Box -->
   <div class="dropdown-text" id="dropdown-text">
@@ -253,14 +249,14 @@
   </div>
 
   <script>
-    const images = ['12.png', '13.png', '14.png', '15.png', '16.png']; // Updated image array
-    let currentIndex = 0; // Start with the first image
+    const images = ['12.png', '13.png', '14.png', '15.png', '16.png'];
+    let currentIndex = 0;
 
     function changeImage(direction) {
       if (direction === 'next') {
-        currentIndex = (currentIndex + 1) % images.length; // Go to next image
+        currentIndex = (currentIndex + 1) % images.length;
       } else if (direction === 'prev') {
-        currentIndex = (currentIndex - 1 + images.length) % images.length; // Go to previous image
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
       }
       document.getElementById('current-image').src = images[currentIndex];
     }
@@ -268,7 +264,6 @@
     const audioPlayer = document.getElementById("music-player");
     const dropdownText = document.getElementById("dropdown-text");
 
-    // Event listener to show the dropdown text when the music finishes
     audioPlayer.addEventListener('ended', () => {
       dropdownText.style.display = 'block';
     });
