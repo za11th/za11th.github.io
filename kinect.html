@@ -10,8 +10,10 @@
 </head>
 <body>
 <script type="module">
-  // Importing three.js and OrbitControls from local /js directory
+  // Importing three.js from your local /js directory
   import * as THREE from './js/three.module.js';
+  
+  // OrbitControls might not be properly exported from OrbitControls.js, so we need to fix it.
   import { OrbitControls } from './js/OrbitControls.js';
 
   let camera, scene, renderer, controls;
