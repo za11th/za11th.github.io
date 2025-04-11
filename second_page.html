@@ -13,8 +13,8 @@
 </head>
 <body>
     <script type="module">
-        import * as THREE from './js/three.module.js';
-        import { OBJLoader } from './js/OBJLoader.js'; // Import the OBJLoader
+        import * as THREE from './js/three.module.js'; // Use the correct relative path for three.js
+        import { OBJLoader } from './js/OBJLoader.js'; // Use the correct relative path for OBJLoader
 
         let camera, scene, renderer, points;
 
@@ -46,12 +46,14 @@
             points = new THREE.Points(pointsGeometry, pointsMaterial);
             scene.add(points);
 
-            // Load the "RibHead.obj" model
+            // Load the "RibHead.obj" model from models/obj
             const objLoader = new OBJLoader();
-            objLoader.load('./models/RibHead.obj', function (object) {
+            objLoader.load('./models/obj/RibHead.obj', function (object) {
                 object.position.set(0, 0, 0); // Set position
                 object.scale.set(10, 10, 10); // Adjust scale
                 scene.add(object); // Add to the scene
+            }, undefined, function (error) {
+                console.error('An error occurred while loading the model:', error);
             });
 
             // Set up the renderer
