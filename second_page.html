@@ -13,7 +13,8 @@
 </head>
 <body>
     <script type="module">
-        import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.module.min.js';
+        // Import Three.js
+        import * as THREE from './js/three.module.js';
 
         let camera, scene, renderer, points;
 
@@ -21,14 +22,14 @@
         animate();
 
         function init() {
-            // Create the camera
+            // Set up the camera
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
             camera.position.z = 1000;
 
             // Set up the scene
             scene = new THREE.Scene();
 
-            // Geometry and material for the points
+            // Create points geometry
             const geometry = new THREE.BufferGeometry();
             const vertices = [];
 
@@ -40,7 +41,7 @@
 
             geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
 
-            const material = new THREE.PointsMaterial({ 
+            const material = new THREE.PointsMaterial({
                 color: 0x888888,
                 size: 5,
                 sizeAttenuation: true,
