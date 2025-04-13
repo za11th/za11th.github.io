@@ -14,14 +14,14 @@
             overflow: hidden;
         }
 
-        .video-background {
+        /* Spline background styling */
+        spline-viewer.background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            z-index: -1;
+            z-index: -1; /* Send it behind all other content */
         }
 
         .content {
@@ -29,7 +29,7 @@
             z-index: 1;
             text-align: center;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.6); /* Semi-transparent background for readability */
             margin: 50px auto;
             max-width: 800px;
             border-radius: 10px;
@@ -50,29 +50,14 @@
             font-size: 1.5em;
             margin-top: 20px;
         }
-
-        spline-viewer {
-            display: block;
-            width: 100%;
-            height: 500px;
-            margin: 20px auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Hide the "Built with Spline" branding */
-        spline-viewer::part(brand) {
-            display: none;
-        }
     </style>
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
 </head>
 <body>
-    <video class="video-background" autoplay muted loop>
-        <source src="Wangan_Highway_Racing_1999.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+    <!-- Spline Background -->
+    <spline-viewer class="background" url="https://prod.spline.design/d2g3tUgKy39rnVz2/scene.splinecode"></spline-viewer>
 
+    <!-- Main Content -->
     <div class="content">
         <h1>About Me</h1>
         <p>
@@ -80,9 +65,6 @@
         </p>
         <p class="greeting"></p>
     </div>
-
-    <!-- Spline Viewer -->
-    <spline-viewer url="https://prod.spline.design/d2g3tUgKy39rnVz2/scene.splinecode"></spline-viewer>
 
     <script>
         const hours = new Date().getHours();
