@@ -78,17 +78,22 @@
         const greeting = hours < 12 ? "Good Morning!" : hours < 18 ? "Good Afternoon!" : "Good Evening!";
         document.querySelector(".greeting").textContent = greeting;
 
-        // Remove "Built with Spline" branding
+        // Remove "Built with Spline" branding using Mutation Observer
         window.addEventListener('DOMContentLoaded', () => {
             const viewer = document.querySelector('spline-viewer');
             if (viewer) {
-                const shadowRoot = viewer.shadowRoot;
-                if (shadowRoot) {
-                    const logo = shadowRoot.querySelector('#logo');
-                    if (logo) {
-                        logo.style.display = 'none';
+                const observer = new MutationObserver(() => {
+                    const shadowRoot = viewer.shadowRoot;
+                    if (shadowRoot) {
+                        const logo = shadowRoot.querySelector('#logo');
+                        if (logo) {
+                            logo.style.display = 'none';
+                        }
                     }
-                }
+                });
+
+                // Start observing the <spline-viewer> element for changes
+                observer.observe(viewer, { childList: true, subtree: true });
             }
         });
     </script>
