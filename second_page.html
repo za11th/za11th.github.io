@@ -3,86 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Models and Points</title>
+    <title>About Me - Zane's Website</title>
     <style>
         body {
             margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            background: #111;
             overflow: hidden;
+        }
+
+        /* Style for the video background */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1; /* Send it behind all other content */
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.6); /* Semi-transparent background for readability */
+            margin: 50px auto;
+            max-width: 800px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin: 0;
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+
+        .greeting {
+            font-weight: bold;
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+
+        a {
+            color: #1e90ff;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+
+        a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <script type="module">
-        // Import Three.js and loaders using correct relative paths
-        import * as THREE from './js/three.module.js'; // Adjust the path according to your repo
-        import { OBJLoader } from './js/loaders/OBJLoader.js'; // Adjust the path according to your repo
+    <!-- Video Background -->
+    <video class="video-background" autoplay muted loop>
+        <source src="Wangan_Highway_Racing_1999.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
 
-        let camera, scene, renderer, points;
+    <!-- Main Content -->
+    <div class="content">
+        <h1>About Me</h1>
+        <p>
+           I am saving up to buy a Skyline (R32) which won't take too long I hope. I never was into cars until about 2 weeks ago when my friend from Saudi Arabia (shoutout) showed me his cars, which were pretty cool. I have only just started making "music" about 2 months ago, and I take inspiration from Steve Monite, Frank Ocean, Khraungbin, and 03 Greedo.
+        </p>
+        <p class="greeting">
+            <!-- Greeting will be dynamically inserted here -->
+        </p>
+    </div>
 
-        init();
-        animate();
-
-        function init() {
-            // Set up the camera
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
-            camera.position.z = 1000;
-
-            // Set up the scene
-            scene = new THREE.Scene();
-
-            // Create points geometry (background stars)
-            const pointsGeometry = new THREE.BufferGeometry();
-            const vertices = [];
-            for (let i = 0; i < 10000; i++) {
-                vertices.push(THREE.MathUtils.randFloatSpread(2000)); // x
-                vertices.push(THREE.MathUtils.randFloatSpread(2000)); // y
-                vertices.push(THREE.MathUtils.randFloatSpread(2000)); // z
-            }
-            pointsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-            const pointsMaterial = new THREE.PointsMaterial({
-                color: 0x888888,
-                size: 5,
-                sizeAttenuation: true,
-            });
-            points = new THREE.Points(pointsGeometry, pointsMaterial);
-            scene.add(points);
-
-            // Load the "Cerberus.obj" model from models/obj
-            const objLoader = new OBJLoader();
-            objLoader.load('./models/obj/Cerberus.obj', function (object) {
-                object.position.set(0, 0, 0); // Set position
-                object.scale.set(10, 10, 10); // Adjust scale
-                console.log('Model loaded successfully:', object); // Debug log
-                scene.add(object); // Add to the scene
-            }, undefined, function (error) {
-                console.error('An error occurred while loading the model:', error); // Error handling
-            });
-
-            // Set up the renderer
-            renderer = new THREE.WebGLRenderer();
-            renderer.setPixelRatio(window.devicePixelRatio);
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.body.appendChild(renderer.domElement);
-
-            // Handle window resizing
-            window.addEventListener('resize', onWindowResize);
-        }
-
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-
-            // Rotate the points for animation
-            points.rotation.x += 0.001;
-            points.rotation.y += 0.001;
-
-            renderer.render(scene, camera);
-        }
+    <script>
+        // Dynamically update the greeting based on the time of day
+        const hours = new Date().getHours();
+        const greeting = hours < 12 ? "Good Morning!" : hours < 18 ? "Good Afternoon!" : "Good Evening!";
+        document.querySelector(".greeting").textContent = greeting;
     </script>
 </body>
 </html>
