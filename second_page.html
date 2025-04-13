@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dive into Zane's journey of music creation and car passion. Learn about his inspirations, goals, and unique story.">
+    <meta name="keywords" content="Zane, Music, Skyline R32, Cars, Frank Ocean, Khruangbin, Music Inspiration">
+    <meta name="author" content="Zane">
+    <meta name="robots" content="index, follow">
     <title>About Me - Zane's Website</title>
     <style>
         body {
@@ -14,14 +18,13 @@
             overflow: hidden;
         }
 
-        /* Spline background styling */
         spline-viewer.background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* Send it behind all other content */
+            z-index: -1;
         }
 
         .content {
@@ -33,78 +36,44 @@
             margin: 50px auto;
             max-width: 800px;
             border-radius: 10px;
+            transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+        }
+
+        .content:hover {
+            transform: scale(1.05);
+            background: rgba(0, 0, 0, 0.8);
         }
 
         h1 {
             font-size: 3em;
             margin: 0;
+            transition: color 0.3s ease-in-out;
+        }
+
+        h1:hover {
+            color: #ff8c00;
         }
 
         p {
             font-size: 1.2em;
             line-height: 1.6;
+            transition: color 0.3s ease-in-out;
         }
 
-        .greeting {
-            font-weight: bold;
-            font-size: 1.5em;
-            margin-top: 20px;
-        }
-
-        /* Compatibility: Attempts to hide the branding */
-        spline-viewer::part(brand),
-        spline-viewer a#logo,
-        spline-viewer a[href*="spline.design"] {
-            display: none !important;
+        p:hover {
+            color: #ff4500;
         }
     </style>
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
 </head>
 <body>
-    <!-- Spline Background -->
     <spline-viewer class="background" url="https://prod.spline.design/d2g3tUgKy39rnVz2/scene.splinecode"></spline-viewer>
 
-    <!-- Main Content -->
     <div class="content">
         <h1>About Me</h1>
         <p>
-           I am saving up to buy a Skyline (R32) which won't take too long I hope. I never was into cars until about 2 weeks ago when my friend from Saudi Arabia (shoutout) showed me his cars, which were pretty cool. I have only just started making "music" about 2 months ago, and I take inspiration from Steve Monite, Frank Ocean, Khruangbin, and 03 Greedo.
+           I am saving up to buy a Skyline (R32), which won't take too long I hope. I never was into cars until about 2 weeks ago when my friend from Saudi Arabia (shoutout) showed me his cars, which were pretty cool. I have only just started making "music" about 2 months ago, and I take inspiration from Steve Monite, Frank Ocean, Khruangbin, and 03 Greedo.
         </p>
-        <p class="greeting"></p>
     </div>
-
-    <script>
-        const hours = new Date().getHours();
-        const greeting = hours < 12 ? "Good Morning!" : hours < 18 ? "Good Afternoon!" : "Good Evening!";
-        document.querySelector(".greeting").textContent = greeting;
-
-        // Remove "Built with Spline" branding by injecting custom CSS
-        window.addEventListener('DOMContentLoaded', () => {
-            const viewer = document.querySelector('spline-viewer');
-            if (viewer) {
-                const applyCustomStyles = () => {
-                    const shadowRoot = viewer.shadowRoot;
-                    if (shadowRoot) {
-                        const style = document.createElement('style');
-                        style.textContent = `
-                            #logo {
-                                display: none !important;
-                            }
-                        `;
-                        shadowRoot.appendChild(style);
-                    }
-                };
-
-                // Apply custom styles when DOM is ready
-                applyCustomStyles();
-
-                // Monitor for any changes and reapply styles if necessary
-                const observer = new MutationObserver(() => {
-                    applyCustomStyles();
-                });
-                observer.observe(viewer, { childList: true, subtree: true });
-            }
-        });
-    </script>
 </body>
 </html>
