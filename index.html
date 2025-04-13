@@ -106,32 +106,16 @@
         color: red;
       }
     }
-
-    .continue-button {
-      position: absolute;
-      bottom: 20px;
-      padding: 10px 20px;
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      border: 2px solid #fff;
-      border-radius: 5px;
-      font-size: 1.2em;
-      cursor: pointer;
-      z-index: 15;
-      animation: fadeIn 2s ease-in-out forwards;
-    }
-
-    .continue-button:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
   </style>
   <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
 </head>
 <body>
   <!-- Spline Intro -->
   <div class="spline-intro">
-    <spline-viewer url="https://prod.spline.design/AtxVlqjErFkDqvYE/scene.splinecode"></spline-viewer>
-    <button class="continue-button" onclick="endIntro()">Continue</button>
+    <spline-viewer
+      id="splineViewer"
+      url="https://prod.spline.design/AtxVlqjErFkDqvYE/scene.splinecode"
+    ></spline-viewer>
   </div>
 
   <!-- Main Content -->
@@ -146,13 +130,32 @@
   </div>
 
   <script>
-    function endIntro() {
-      const splineIntro = document.querySelector('.spline-intro');
-      const mainContent = document.querySelector('.main-content');
+    // Get references to the Spline viewer and main content
+    const splineViewer = document.getElementById('splineViewer');
+    const splineIntro = document.querySelector('.spline-intro');
+    const mainContent = document.querySelector('.main-content');
 
-      // Hide the Spline intro and show the main content
-      splineIntro.style.display = 'none';
-      mainContent.style.display = 'flex';
+    // Spline Viewer Interaction Handler
+    splineViewer.addEventListener('load', () => {
+      console.log('Spline viewer loaded.');
+    });
+
+    // Listen for User Interaction to Trigger Transition
+    splineViewer.addEventListener('click', () => {
+      console.log('User interacted with Spline scene.');
+      endIntro(); // Transition to main content
+    });
+
+    // Fallback Timeout (e.g., if interaction is not detected)
+    setTimeout(() => {
+      console.log('Fallback: Transitioning after timeout.');
+      endIntro();
+    }, 15000); // 15 seconds fallback
+
+    // Function to End Intro and Show Main Content
+    function endIntro() {
+      splineIntro.style.display = 'none'; // Hide Spline intro
+      mainContent.style.display = 'flex'; // Show main content
     }
   </script>
 </body>
