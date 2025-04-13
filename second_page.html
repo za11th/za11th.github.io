@@ -51,9 +51,10 @@
             margin-top: 20px;
         }
 
-        /* Hide the "Built with Spline" branding */
+        /* Hide the "Built with Spline" branding and logo */
         spline-viewer::part(brand),
-        spline-viewer a#logo {
+        spline-viewer a#logo,
+        spline-viewer a[href*="spline.design"] {
             display: none !important;
         }
     </style>
