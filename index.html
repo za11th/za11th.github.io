@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Local Host Testing</title>
   <style>
     body {
@@ -19,37 +19,7 @@
       font-weight: bold;
       position: relative;
       text-align: center;
-    }
-
-    .spline-intro {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 10;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #000;
-    }
-
-    .main-content {
-      display: none; /* Hidden by default */
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      animation: fadeIn 2s ease-in-out forwards;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
+      animation: zoomInEffect 3s ease-in-out forwards; /* Animation to zoom in */
     }
 
     .glitch {
@@ -62,6 +32,72 @@
       margin-bottom: 20px;
     }
 
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .glitch::before {
+      left: 2px;
+      text-shadow: -2px 0 red;
+      animation: glitch-anim 1s linear infinite reverse;
+    }
+
+    .glitch::after {
+      left: -2px;
+      text-shadow: -2px 0 blue;
+      animation: glitch-anim2 1s linear infinite reverse;
+    }
+
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0); }
+    }
+
+    @keyframes glitch-anim {
+      0% { clip: rect(44px, 9999px, 56px, 0); transform: skew(0.3deg); }
+      20% { clip: rect(17px, 9999px, 11px, 0); transform: skew(0.5deg); }
+      40% { clip: rect(10px, 9999px, 84px, 0); transform: skew(0.1deg); }
+      60% { clip: rect(25px, 9999px, 65px, 0); transform: skew(0.7deg); }
+      80% { clip: rect(84px, 9999px, 90px, 0); transform: skew(0.6deg); }
+      100% { clip: rect(11px, 9999px, 44px, 0); transform: skew(0.2deg); }
+    }
+
+    @keyframes glitch-anim2 {
+      0% { clip: rect(20px, 9999px, 45px, 0); transform: skew(0.4deg); }
+      20% { clip: rect(74px, 9999px, 34px, 0); transform: skew(0.6deg); }
+      40% { clip: rect(24px, 9999px, 55px, 0); transform: skew(0.3deg); }
+      60% { clip: rect(12px, 9999px, 44px, 0); transform: skew(0.7deg); }
+      80% { clip: rect(64px, 9999px, 75px, 0); transform: skew(0.2deg); }
+      100% { clip: rect(30px, 9999px, 25px, 0); transform: skew(0.5deg); }
+    }
+
+    @keyframes rgb-animation {
+      0% { color: red; }
+      33% { color: green; }
+      66% { color: blue; }
+      100% { color: red; }
+    }
+
+    .background-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
     .about-box {
       max-width: 600px;
       background: rgba(0, 0, 0, 0.6);
@@ -71,92 +107,209 @@
       font-size: 1.1em;
     }
 
-    @keyframes glitch {
+    .audio-player {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 20px;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .audio-player img {
+      border-radius: 10px;
+      width: 60px;
+      height: 60px;
+      margin-right: 15px;
+    }
+
+    .audio-player h2 {
+      font-size: 1.2em;
+      margin-right: 15px;
+    }
+
+    audio {
+      background: none;
+      border: none;
+    }
+
+    /* Button Style */
+    .link-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 1.1em;
+      color: #fff;
+      background-color: rgba(0, 0, 0, 0.6);
+      border: 2px solid #fff;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .link-button:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.05);
+    }
+
+    .dropdown-text {
+      display: none;
+      margin-top: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 1.2em;
+    }
+
+    @keyframes zoomInEffect {
       0% {
-        transform: translate(0);
-      }
-      20% {
-        transform: translate(-2px, 2px);
-      }
-      40% {
-        transform: translate(-2px, -2px);
-      }
-      60% {
-        transform: translate(2px, 2px);
-      }
-      80% {
-        transform: translate(2px, -2px);
+        transform: scale(0.5);
+        opacity: 0;
       }
       100% {
-        transform: translate(0);
+        transform: scale(1);
+        opacity: 1;
       }
     }
 
-    @keyframes rgb-animation {
-      0% {
-        color: red;
+    .image-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .image-container img {
+      width: 320px;
+      height: auto;
+      border-radius: 20px;
+    }
+
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2em;
+      color: white;
+      cursor: pointer;
+      z-index: 10;
+      padding: 10px;
+    }
+
+    .left-arrow {
+      left: 10px;
+    }
+
+    .right-arrow {
+      right: 10px;
+    }
+
+    /* Responsive Design for Phones */
+    @media (max-width: 768px) {
+      .glitch {
+        font-size: 1.5em;
       }
-      33% {
-        color: green;
+
+      .about-box {
+        font-size: 1em;
+        padding: 15px;
       }
-      66% {
-        color: blue;
+
+      .audio-player img {
+        width: 50px;
+        height: 50px;
       }
-      100% {
-        color: red;
+
+      .image-container img {
+        width: 260px;
+      }
+
+      .link-button {
+        padding: 10px 20px;
+        font-size: 1em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .glitch {
+        font-size: 1.2em;
+      }
+
+      .about-box {
+        font-size: 0.9em;
+      }
+
+      .audio-player img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .image-container img {
+        width: 220px;
       }
     }
   </style>
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
 </head>
 <body>
-  <!-- Spline Intro -->
-  <div class="spline-intro">
-    <spline-viewer
-      id="splineViewer"
-      url="https://prod.spline.design/AtxVlqjErFkDqvYE/scene.splinecode"
-    ></spline-viewer>
+  <video autoplay muted loop playsinline class="background-video">
+    <source src="deathtotheworld.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="glitch rgb" data-text="Zane's Website">Welcome to Zane's Website</div>
+
+  <div class="about-box">
+     I'm a 15-year-old Christian who loves messing around with computers and has a real thing for cars.
+     I’m pretty fluent in HTML, CSS, and Python. Lately,
+     I’ve been working on a personal music project with a few tracks I produced myself. 
+     I also like playing around in Photoshop. I used to make GTA V mods, but I’m not really into that scene anymore.
   </div>
 
-  <!-- Main Content -->
-  <div class="main-content">
-    <div class="glitch" data-text="Welcome to Zane's Website">Welcome to Zane's Website</div>
-    <div class="about-box">
-      I'm a 15-year-old Christian who loves messing around with computers and has a real thing for cars.
-      I’m pretty fluent in HTML, CSS, and Python. Lately, I’ve been working on a personal music project
-      with a few tracks I produced myself. I also like playing around in Photoshop. I used to make GTA V
-      mods, but I’m not really into that scene anymore.
-    </div>
+  <div class="audio-player">
+    <img src="Album_Cover.png" alt="Album Cover" />
+    <h2>You Did It King</h2>
+    <audio id="music-player" controls>
+      <source src="You_Did_It_King.mp3" type="audio/mp3" />
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+
+  <a href="second_page.html" class="link-button">Second Page</a>
+
+  <div class="dropdown-text" id="dropdown-text">
+    Pretty cool, Right?
+  </div>
+
+  <div class="image-container">
+    <img id="current-image" src="12.png" alt="Image" class="image-12" />
+    <span class="arrow left-arrow" onclick="changeImage('prev')">&#8592;</span>
+    <span class="arrow right-arrow" onclick="changeImage('next')">&#8594;</span>
   </div>
 
   <script>
-    // Get references to the Spline viewer and main content
-    const splineViewer = document.getElementById('splineViewer');
-    const splineIntro = document.querySelector('.spline-intro');
-    const mainContent = document.querySelector('.main-content');
+    const images = ['12.png', '13.png', '14.png', '15.png', '16.png'];
+    let currentIndex = 0;
 
-    // Spline Viewer Interaction Handler
-    splineViewer.addEventListener('load', () => {
-      console.log('Spline viewer loaded.');
-    });
-
-    // Listen for User Interaction to Trigger Transition
-    splineViewer.addEventListener('click', () => {
-      console.log('User interacted with Spline scene.');
-      endIntro(); // Transition to main content
-    });
-
-    // Fallback Timeout (e.g., if interaction is not detected)
-    setTimeout(() => {
-      console.log('Fallback: Transitioning after timeout.');
-      endIntro();
-    }, 15000); // 15 seconds fallback
-
-    // Function to End Intro and Show Main Content
-    function endIntro() {
-      splineIntro.style.display = 'none'; // Hide Spline intro
-      mainContent.style.display = 'flex'; // Show main content
+    function changeImage(direction) {
+      if (direction === 'next') {
+        currentIndex = (currentIndex + 1) % images.length;
+      } else if (direction === 'prev') {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+      }
+      document.getElementById('current-image').src = images[currentIndex];
     }
+
+    const audioPlayer = document.getElementById("music-player");
+    const dropdownText = document.getElementById("dropdown-text");
+
+    audioPlayer.addEventListener('ended', () => {
+      dropdownText.style.display = 'block';
+    });
   </script>
 </body>
 </html>
