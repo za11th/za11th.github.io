@@ -75,5 +75,31 @@
            I am saving up to buy a Skyline (R32), which won't take too long I hope. I never was into cars until about 2 weeks ago when my friend from Saudi Arabia (shoutout) showed me his cars, which were pretty cool. I have only just started making "music" about 2 months ago, and I take inspiration from Steve Monite, Frank Ocean, Khruangbin, and 03 Greedo.
         </p>
     </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const viewer = document.querySelector('spline-viewer');
+            if (viewer) {
+                const removeSplineBranding = () => {
+                    const shadowRoot = viewer.shadowRoot;
+                    if (shadowRoot) {
+                        const logo = shadowRoot.querySelector('#logo');
+                        if (logo) {
+                            logo.style.display = 'none';
+                        }
+                    }
+                };
+
+                // Apply initial removal of branding
+                removeSplineBranding();
+
+                // Continuously monitor for changes in shadow DOM
+                const observer = new MutationObserver(() => {
+                    removeSplineBranding();
+                });
+                observer.observe(viewer, { childList: true, subtree: true });
+            }
+        });
+    </script>
 </body>
 </html>
