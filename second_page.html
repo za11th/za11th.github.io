@@ -51,7 +51,7 @@
             margin-top: 20px;
         }
 
-        /* Hide the "Built with Spline" branding and logo */
+        /* Hide branding elements for compatibility */
         spline-viewer::part(brand),
         spline-viewer a#logo,
         spline-viewer a[href*="spline.design"] {
@@ -77,6 +77,20 @@
         const hours = new Date().getHours();
         const greeting = hours < 12 ? "Good Morning!" : hours < 18 ? "Good Afternoon!" : "Good Evening!";
         document.querySelector(".greeting").textContent = greeting;
+
+        // Remove "Built with Spline" branding
+        window.addEventListener('DOMContentLoaded', () => {
+            const viewer = document.querySelector('spline-viewer');
+            if (viewer) {
+                const shadowRoot = viewer.shadowRoot;
+                if (shadowRoot) {
+                    const logo = shadowRoot.querySelector('#logo');
+                    if (logo) {
+                        logo.style.display = 'none';
+                    }
+                }
+            }
+        });
     </script>
 </body>
 </html>
