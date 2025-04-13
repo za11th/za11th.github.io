@@ -61,7 +61,19 @@
         a:hover {
             text-decoration: underline;
         }
+
+        /* Style for the Spline viewer */
+        spline-viewer {
+            display: block;
+            width: 100%;
+            height: 500px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
     </style>
+    <!-- Include Spline Viewer script -->
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
 </head>
 <body>
     <!-- Video Background -->
@@ -80,6 +92,9 @@
             <!-- Greeting will be dynamically inserted here -->
         </p>
     </div>
+
+    <!-- Spline Viewer -->
+    <spline-viewer url="https://prod.spline.design/yGXWP3c12Z1DCmQC/scene.splinecode"></spline-viewer>
 
     <script>
         // Dynamically update the greeting based on the time of day
