@@ -14,7 +14,6 @@
             overflow: hidden;
         }
 
-        /* Style for the video background */
         .video-background {
             position: fixed;
             top: 0;
@@ -22,7 +21,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: -1; /* Send it behind all other content */
+            z-index: -1;
         }
 
         .content {
@@ -30,7 +29,7 @@
             z-index: 1;
             text-align: center;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.6); /* Semi-transparent background for readability */
+            background: rgba(0, 0, 0, 0.6);
             margin: 50px auto;
             max-width: 800px;
             border-radius: 10px;
@@ -52,17 +51,6 @@
             margin-top: 20px;
         }
 
-        a {
-            color: #1e90ff;
-            text-decoration: none;
-            font-size: 1.1em;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        /* Style for the Spline viewer */
         spline-viewer {
             display: block;
             width: 100%;
@@ -71,33 +59,32 @@
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
+
+        /* Hide the "Built with Spline" branding */
+        spline-viewer::part(brand) {
+            display: none;
+        }
     </style>
-    <!-- Include Spline Viewer script -->
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
 </head>
 <body>
-    <!-- Video Background -->
     <video class="video-background" autoplay muted loop>
         <source src="Wangan_Highway_Racing_1999.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
 
-    <!-- Main Content -->
     <div class="content">
         <h1>About Me</h1>
         <p>
-           I am saving up to buy a Skyline (R32) which won't take too long I hope. I never was into cars until about 2 weeks ago when my friend from Saudi Arabia (shoutout) showed me his cars, which were pretty cool. I have only just started making "music" about 2 months ago, and I take inspiration from Steve Monite, Frank Ocean, Khraungbin, and 03 Greedo.
+           I am saving up to buy a Skyline (R32) which won't take too long I hope. I never was into cars until about 2 weeks ago when my friend from Saudi Arabia (shoutout) showed me his cars, which were pretty cool. I have only just started making "music" about 2 months ago, and I take inspiration from Steve Monite, Frank Ocean, Khruangbin, and 03 Greedo.
         </p>
-        <p class="greeting">
-            <!-- Greeting will be dynamically inserted here -->
-        </p>
+        <p class="greeting"></p>
     </div>
 
     <!-- Spline Viewer -->
-    <spline-viewer url="https://prod.spline.design/yGXWP3c12Z1DCmQC/scene.splinecode"></spline-viewer>
+    <spline-viewer url="https://prod.spline.design/d2g3tUgKy39rnVz2/scene.splinecode"></spline-viewer>
 
     <script>
-        // Dynamically update the greeting based on the time of day
         const hours = new Date().getHours();
         const greeting = hours < 12 ? "Good Morning!" : hours < 18 ? "Good Afternoon!" : "Good Evening!";
         document.querySelector(".greeting").textContent = greeting;
